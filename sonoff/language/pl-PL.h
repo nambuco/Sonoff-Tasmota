@@ -688,4 +688,8 @@
 #define D_CMND_MAXENERGY "MaxEnergy"
 #define D_CMND_MAXENERGYSTART "MaxEnergyStart"
 
+// Commands thermostat.ino
+#define D_CMND_THERMOSTAT "Thermostat"
+#define D_CMND_SETPOINT "SetPoint"
+
 #endif  // _LANGUAGE_PL_PL_H_

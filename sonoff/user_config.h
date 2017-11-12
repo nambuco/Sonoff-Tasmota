@@ -48,10 +48,10 @@
 #define WIFI_SUBNETMASK        "255.255.255.0"   // [IpAddress3] If not using DHCP set Network mask
 #define WIFI_DNS               "192.168.2.27"    // [IpAddress4] If not using DHCP set DNS IP address (might be equal to WIFI_GATEWAY)
 
-#define STA_SSID1              "indebuurt1"      // [Ssid1] Wifi SSID
-#define STA_PASS1              "VnsqrtnrsddbrN"  // [Password1] Wifi password
-#define STA_SSID2              "indebuurt2"      // [Ssid2] Optional alternate AP Wifi SSID
-#define STA_PASS2              "VnsqrtnrsddbrN"  // [Password2] Optional alternate AP Wifi password
+#define STA_SSID1              "WiFi Time Capsule Nambuco"      // [Ssid1] Wifi SSID
+#define STA_PASS1              "31413906"  // [Password1] Wifi password
+#define STA_SSID2              "iPhone de Paulo Henrique"      // [Ssid2] Optional alternate AP Wifi SSID
+#define STA_PASS2              "31413141"  // [Password2] Optional alternate AP Wifi password
 #define WIFI_CONFIG_TOOL       WIFI_WPSCONFIG    // [WifiConfig] Default tool if wifi fails to connect
                                                  //   (WIFI_RESTART, WIFI_SMARTCONFIG, WIFI_MANAGER, WIFI_WPSCONFIG, WIFI_RETRY, WIFI_WAIT)
 
@@ -77,10 +77,10 @@
   #define MQTT_USER            "cloudmqttuser"      // [MqttUser] Mandatory user
   #define MQTT_PASS            "cloudmqttpassword"  // [MqttPassword] Mandatory password
 #else
-  #define MQTT_HOST            "domus1"          // [MqttHost]
+  #define MQTT_HOST            "10.0.1.200"          // [MqttHost]
   #define MQTT_PORT            1883              // [MqttPort] MQTT port (10123 on CloudMQTT)
-  #define MQTT_USER            "DVES_USER"       // [MqttUser] Optional user
-  #define MQTT_PASS            "DVES_PASS"       // [MqttPassword] Optional password
+  #define MQTT_USER            "pi"       // [MqttUser] Optional user
+  #define MQTT_PASS            "kasebrot"       // [MqttPassword] Optional password
 #endif
 
 #define MQTT_BUTTON_RETAIN     0                 // [ButtonRetain] Button may send retain flag (0 = off, 1 = on)
@@ -136,10 +136,10 @@
 #define NTP_SERVER3            "0.nl.pool.ntp.org"  // [NtpServer3] Select third NTP server by name or IP address (93.94.224.67)
 
 // -- Time - Start Daylight Saving Time and timezone offset from UTC in minutes
-#define TIME_DST               North, Last, Sun, Mar, 2, +120  // Northern Hemisphere, Last sunday in march at 02:00 +120 minutes
+#define TIME_DST               South, Last, Sun, Mar, 1, -120  // Northern Hemisphere, Last sunday in march at 02:00 +120 minutes
 
 // -- Time - Start Standard Time and timezone offset from UTC in minutes
-#define TIME_STD               North, Last, Sun, Oct, 3, +60   // Northern Hemisphere, Last sunday in october 02:00 +60 minutes
+#define TIME_STD               South, Last, Sun, Oct, 1, -180   // Northern Hemisphere, Last sunday in october 02:00 +60 minutes
 
 // -- Application ---------------------------------
 #define APP_TIMEZONE           1                 // [Timezone] +1 hour (Amsterdam) (-12 .. 12 = hours from UTC, 99 = use TIME_DST/TIME_STD)
@@ -175,6 +175,7 @@
 #define USE_IR_REMOTE                            // Send IR remote commands using library IRremoteESP8266 and ArduinoJson (+3k code, 0.3k mem)
 //  #define USE_IR_HVAC                            // Support for HVAC system using IR (+2k code)
   #define USE_IR_RECEIVE                         // Support for IR receiver (+4k code)
+#define THERMOSTAT                               // Uses Hard Thermostat
 
 #define USE_WS2812                               // WS2812 Led string using library NeoPixelBus (+5k code, +1k mem) - Disable by //
   #define USE_WS2812_CTYPE     1                 // WS2812 Color type (0 - RGB, 1 - GRB)

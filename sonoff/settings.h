@@ -155,7 +155,7 @@ struct SYSCFG {
   char          friendlyname[MAX_FRIENDLYNAMES][33]; // 3AC
   char          switch_topic[33];          // 430
 
-  byte          free_451[2];               // 451
+  int16_t       thermo_setpoint;           // 451
 
   uint8_t       sleep;                     // 453
   uint16_t      domoticz_switch_idx[MAX_DOMOTICZ_IDX]; // 454
