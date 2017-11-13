@@ -5,3 +5,4 @@
 .vscode/c_cpp_properties.json
 sonoff/user_config.h
 platformio.ini
+sonoff\user_config.h
