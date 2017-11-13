@@ -48,10 +48,10 @@
 #define WIFI_SUBNETMASK        "255.255.255.0"   // [IpAddress3] If not using DHCP set Network mask
 #define WIFI_DNS               "192.168.2.27"    // [IpAddress4] If not using DHCP set DNS IP address (might be equal to WIFI_GATEWAY)
 
-#define STA_SSID1              "WiFi Time Capsule Nambuco"      // [Ssid1] Wifi SSID
-#define STA_PASS1              "31413906"  // [Password1] Wifi password
-#define STA_SSID2              "iPhone de Paulo Henrique"      // [Ssid2] Optional alternate AP Wifi SSID
-#define STA_PASS2              "31413141"  // [Password2] Optional alternate AP Wifi password
+#define STA_SSID1              "xxxxxxxx"      // [Ssid1] Wifi SSID
+#define STA_PASS1              "0000000"  // [Password1] Wifi password
+#define STA_SSID2              "xxxxxxx"      // [Ssid2] Optional alternate AP Wifi SSID
+#define STA_PASS2              "0000000"  // [Password2] Optional alternate AP Wifi password
 #define WIFI_CONFIG_TOOL       WIFI_WPSCONFIG    // [WifiConfig] Default tool if wifi fails to connect
                                                  //   (WIFI_RESTART, WIFI_SMARTCONFIG, WIFI_MANAGER, WIFI_WPSCONFIG, WIFI_RETRY, WIFI_WAIT)
 
