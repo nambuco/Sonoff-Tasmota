@@ -28,6 +28,16 @@ enum ThermoCommands {
     CMND_THERMOSTAT, CMND_SETPOINT };
 const char kThermoCommands[] PROGMEM =
     D_CMND_THERMOSTAT "|" D_CMND_SETPOINT ;
+
+enum ThermoStates {
+    STATE_ON, STATE_OFF_DELAY, STATE_OFF, STATE_DISABLED};
+
+byte thermo_state = STATE_DISABLED;
+uint8 thermo_timer = 0;
+
+#define OFF_DELAY 90  // minimal off time in seconds
+#define HYSTERESIS 2  // Hysteresys in 0.1 Degrees
+
   
 /*********************************************************************************************\
  * Commands
@@ -38,50 +48,80 @@ boolean ThermoCommand(char *type, uint16_t index, char *dataBuf, uint16_t data_l
   char command [CMDSZ];
   char sunit[CMDSZ];
   boolean serviced = true;
-  uint8_t status_flag = 0;
- // uint8_t unit = 0;
-//  unsigned long nvalue = 0;
 
   int command_code = GetCommandCode(command, sizeof(command), type, kThermoCommands);
   if (CMND_THERMOSTAT == command_code) {
-//    if ((payload >= 0) && (payload < 3601)) {
-//     Settings.hlw_pmin = payload;
-//    }
- //   nvalue = Settings.hlw_pmin;
-     snprintf_P(log_data, sizeof(log_data), PSTR("Thermostat Comand %d"), payload);
-     AddLog(LOG_LEVEL_DEBUG);
-     snprintf_P(mqtt_data, sizeof(mqtt_data), S_JSON_COMMAND_NVALUE, command, payload);
+    snprintf_P(log_data, sizeof(log_data), PSTR("Thermostat Comand %d"), payload);
+    AddLog(LOG_LEVEL_DEBUG);
+    if ((payload == 0) || (payload == 1)) {
+      Settings.thermo = payload;
+      snprintf_P(mqtt_data, sizeof(mqtt_data), S_JSON_COMMAND_NVALUE, command, Settings.thermo);
     }
+  }
   else if (CMND_SETPOINT == command_code) {
     snprintf_P(log_data, sizeof(log_data), PSTR("Setpoint Comand %d"), payload);
     AddLog(LOG_LEVEL_DEBUG);
-      if ((payload >= -50) && (payload < +50)) {
+      if ((payload >= -500) && (payload < +500)) {
         Settings.thermo_setpoint = payload;
-    }
+      }
     snprintf_P(mqtt_data, sizeof(mqtt_data), S_JSON_COMMAND_NVALUE, command,  Settings.thermo_setpoint);
-//    nvalue = Settings.hlw_pmax;
   }
   else {
     serviced = false;
   }
-//  if (!status_flag) {
-//    if (Settings.flag.value_units) {
-//      snprintf_P(mqtt_data, sizeof(mqtt_data), S_JSON_COMMAND_NVALUE_SPACE_UNIT, command, nvalue, GetTextIndexed(sunit, sizeof(sunit), unit, kUnitNames));
-//    } else {
-//      snprintf_P(mqtt_data, sizeof(mqtt_data), S_JSON_COMMAND_NVALUE, command, nvalue);
-//    }
-//  }
   return serviced;
 }
 
 // Hard Thermostat main function
-byte teste;
 void ThermoFunction (int tele_period)
 {
 #ifdef USE_DS18B20
-
-  teste ++;
-  snprintf_P(log_data, sizeof(log_data), PSTR("Hard Thermostat Function %d"), teste);
-  AddLog(LOG_LEVEL_DEBUG);  
+  float temp;
+  thermo_timer ++;
+  if ((pin[GPIO_DSB] < 99) && (tele_period == 0)) {
+    if (Ds18b20ReadTemperature(temp)) {
+//      snprintf_P(log_data, sizeof(log_data), PSTR("Hard Thermostat Function %d | State %d | Temp %s"), Settings.thermo_setpoint, thermo_state, String(temp * 10).c_str());
+//      AddLog(LOG_LEVEL_DEBUG);
+      if (thermo_state == STATE_ON) {
+        if (Settings.thermo == 0) {
+          ExecuteCommandPower(1, 0);
+          thermo_state = STATE_DISABLED;
+        }
+        else if ((temp * 10) < (Settings.thermo_setpoint)) {
+          ExecuteCommandPower(1,0);
+          thermo_timer = 0;
+          thermo_state = STATE_OFF_DELAY;
+        }
+        else {
+          ExecuteCommandPower(1,1);
+        }
+      }
+      else if (thermo_state == STATE_OFF) {
+        if (Settings.thermo == 0) {
+          ExecuteCommandPower(1, 0);
+          thermo_state = STATE_DISABLED;
+        }
+        else if ((temp * 10) > (Settings.thermo_setpoint + HYSTERESIS)) {
+          ExecuteCommandPower(1,1);
+          thermo_state = STATE_ON;
+        }
+        else {
+          ExecuteCommandPower(1,0);
+        }
+      }
+      else if (thermo_state == STATE_OFF_DELAY) {
+        if (thermo_timer > OFF_DELAY) {
+        thermo_state = STATE_OFF;
+        thermo_timer = 0;
+        }
+      }
+      else if (thermo_state == STATE_DISABLED) {
+        if (Settings.thermo == 1) {
+          ExecuteCommandPower(1, 0);
+          thermo_state = STATE_OFF;
+        }
+      }
+    }
+  }
 #endif  // USE_DS18B20
 }

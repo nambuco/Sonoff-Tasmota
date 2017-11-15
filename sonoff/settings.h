@@ -149,7 +149,7 @@ struct SYSCFG {
   uint8_t       ws_scheme;                 // 3A7 Not used since 5.8.0
   uint8_t       ex_ws_width;               // 3A8 Not used since 5.8.0
 
-  byte          free_3A9[1];               // 3A9
+  byte          thermo;                   // 3A9
 
   uint16_t      ws_wakeup;                 // 3AA Not used since 5.8.0
   char          friendlyname[MAX_FRIENDLYNAMES][33]; // 3AC

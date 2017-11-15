@@ -455,6 +455,7 @@ void SettingsDefaultSet2()
 //  Settings.hlw_mspl = 0;                             // MaxSafePowerLimit
   Settings.hlw_msplh = SAFE_POWER_HOLD;
   Settings.hlw_msplw = SAFE_POWER_WINDOW;
+  Settings.thermo = 0;
   Settings.thermo_setpoint = 10;
 //  Settings.hlw_mkwh = 0;                             // MaxEnergy
 //  Settings.hlw_mkwhs = 0;                            // MaxEnergyStart
